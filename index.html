@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <title>Millennium - Registrar Usuarios</title>
+</head>
+
+<body>
+    <div class="container mt-5 text-center">
+        <div class="row">
+            <div class="col-md-12">
+                <div style="border: 2px solid #000000; padding: 5px;">
+                    <h4>Formulario de Registro</h4>
+                    <form id="formulario">
+                        <div class="form-group">
+                            <label for="Nombre">Nombres (*)</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="Apellido">Apellidos (*)</label>
+                            <input type="text" class="form-control" id="apellido" name="apellido">
+                        </div>
+                        <button type="submit" id="guardar" class="btn btn-primary btn-block">Guardar</button>
+                    </form>
+                    <div id="respuesta" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    $(document).ready(function() {
+        $('#guardar').on("click", function(event) {
+            event.preventDefault();
+            if ($('#nombre').val().length > 0 && $('#apellido').val().length > 0) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "formulario.php",
+                    data: $('#formulario').serialize(),
+                    success: function(data) {
+                        if (data == 1) {
+                            document.querySelector('#respuesta').innerHTML = `<div class="alert alert-success" role="alert">Datos Guardados</div>`;
+                            document.querySelector("#formulario").reset();
+                        } else {
+                            document.querySelector('#respuesta').innerHTML = `<div class="alert alert-danger" role="alert">Error al Guardar</div>`;
+                        }
+                    }
+                });
+
+            } else {
+                document.querySelector('#respuesta').innerHTML = `<div class="alert alert-warning" role="alert">Todos los campos con (*) obligatorios</div>`;
+                return false;
+            }
+        })
+    })
+    </script>
+</body>
+
+</html>
